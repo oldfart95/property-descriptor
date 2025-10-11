@@ -50,8 +50,21 @@ export default function PropertyDescriptionGenerator() {
       })
 
       const data = await response.json()
+
+      if (!response.ok) {
+        console.error("[v0] API error:", data)
+        toast({
+          title: "Generation Failed",
+          description:
+            data.details || "Failed to generate description. Please check your API keys in environment variables.",
+          variant: "destructive",
+        })
+        return
+      }
+
       setGeneratedDescription(data.description)
     } catch (error) {
+      console.error("[v0] Fetch error:", error)
       toast({
         title: "Generation Failed",
         description: "Failed to generate description. Please try again.",
